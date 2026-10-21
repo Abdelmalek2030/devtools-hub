@@ -1,0 +1,4 @@
+# ShellCheck static analysis configuration for POSIX compliance
+shell=sh
+severity=warning
+disable=SC2034,SC2154
