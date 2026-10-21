@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: POSIX Syntax & ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Verify POSIX sh syntax
+        run: |
+          for script in scripts/*; do
+            [ -f "$script" ] || continue
+            sh -n "$script"
+          done
+
+      - name: Run ShellCheck static analysis
+        run: |
+          for script in scripts/*; do
+            [ -f "$script" ] || continue
+            shellcheck "$script"
+          done
