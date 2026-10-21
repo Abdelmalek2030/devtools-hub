@@ -1,0 +1,11 @@
+# Editor & OS artifacts
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local test logs & temporary runtime files
+*.log
+*.tmp
+/tmp/
