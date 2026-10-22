@@ -1,0 +1,30 @@
+.TH CLEAN-PORTS 1 "October 2026" "devtools-hub 1.0.0" "User Commands"
+.SH NAME
+clean-ports \- inspect and deterministically terminate processes bound to a TCP port
+.SH SYNOPSIS
+.B clean-ports
+.I port
+.RB [ \-\-dry\-run ]
+.SH DESCRIPTION
+.B clean-ports
+queries active network sockets via
+.BR lsof (8)
+to identify processes listening on the specified TCP
+.I port
+and terminates them gracefully using
+.B SIGTERM
+with fallback to
+.BR SIGKILL .
+.SH OPTIONS
+.TP
+.B \-\-dry\-run
+Print active PIDs bound to the target port without sending termination signals.
+.SH EXIT STATUS
+.TP
+.B 0
+Target port was freed successfully, was already free, or dry-run completed.
+.TP
+.B 1
+Invalid arguments or non-numeric port specification.
+.SH AUTHOR
+Abdelmalek <Abdelmalek2030github@hotmail.com>
