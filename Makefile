@@ -4,7 +4,7 @@ MANDIR ?= $(PREFIX)/share/man/man1
 SCRIPTS_DIR := scripts
 MAN_DIR := man
 
-.PHONY: all help check lint test install uninstall
+.PHONY: all help check lint test bench install uninstall
 
 all: help
 
@@ -14,6 +14,7 @@ help:
 	@printf "  make check      Verify POSIX sh syntax without executing scripts\n"
 	@printf "  make lint       Run ShellCheck static analysis across all scripts\n"
 	@printf "  make test       Execute zero-dependency POSIX behavioral test suite\n"
+	@printf "  make bench      Run execution performance benchmark suite\n"
 	@printf "  make install    Install utilities and man pages into $(PREFIX)\n"
 	@printf "  make uninstall  Remove installed utilities and man pages\n"
 
@@ -27,6 +28,9 @@ lint: check
 
 test:
 	@sh ./tests/run.sh
+
+bench:
+	@sh ./tests/benchmark.sh
 
 install:
 	@mkdir -p "$(DESTDIR)$(BINDIR)" "$(DESTDIR)$(MANDIR)"
