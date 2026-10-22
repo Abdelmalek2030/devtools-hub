@@ -1,0 +1,17 @@
+.TH SYS-DOCTOR 1 "October 2026" "devtools-hub 1.0.0" "User Commands"
+.SH NAME
+sys-doctor \- run automated POSIX system health diagnostics and resource audits
+.SH SYNOPSIS
+.B sys-doctor
+.SH DESCRIPTION
+.B sys-doctor
+inspects underlying operating system kernels, evaluates CPU load averages, calculates root partition disk utilization percentages, and scans for lingering zombie processes across Unix environments.
+.SH EXIT STATUS
+.TP
+.B 0
+All system diagnostics passed health thresholds successfully.
+.TP
+.B 1
+Critical resource exhaustion detected (e.g., root partition disk usage exceeding 90%).
+.SH AUTHOR
+Abdelmalek <Abdelmalek2030github@hotmail.com>
