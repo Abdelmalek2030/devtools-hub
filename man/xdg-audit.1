@@ -1,0 +1,29 @@
+.TH XDG-AUDIT 1 "October 2026" "devtools-hub 1.0.0" "User Commands"
+.SH NAME
+xdg-audit \- audit XDG Base Directory paths, fallbacks, and disk usage
+.SH SYNOPSIS
+.B xdg-audit
+.RB [ \-\-strict ]
+.SH DESCRIPTION
+.B xdg-audit
+evaluates standard XDG Base Directory environment variables
+.RB ( XDG_CONFIG_HOME ,
+.BR XDG_DATA_HOME ,
+.BR XDG_STATE_HOME ,
+and
+.BR XDG_CACHE_HOME ),
+verifies directory existence on the local filesystem, and calculates human-readable disk usage via
+.BR du (1).
+.SH OPTIONS
+.TP
+.B \-\-strict
+Return a non-zero exit code if any resolved XDG directory is missing.
+.SH EXIT STATUS
+.TP
+.B 0
+Audit completed successfully (or all directories present under \-\-strict).
+.TP
+.B 1
+Invalid CLI arguments or missing XDG directories when invoked with \-\-strict.
+.SH AUTHOR
+Abdelmalek <Abdelmalek2030github@hotmail.com>
