@@ -1,0 +1,25 @@
+#compdef clean-ports
+# Zsh programmable completion for clean-ports(1)
+
+_clean_ports() {
+    local -a ports
+    ports=(
+        '3000:Node.js / Frontend dev server'
+        '5432:PostgreSQL database server'
+        '6379:Redis in-memory store'
+        '8000:Python / HTTP application server'
+        '8080:Alternative HTTP proxy port'
+    )
+
+    _arguments \
+        '1:port:->ports' \
+        '2:flag:(--dry-run)'
+
+    case "$state" in
+        ports)
+            _describe -t ports 'common development ports' ports
+            ;;
+    esac
+}
+
+_clean_ports "$@"
