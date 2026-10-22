@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  lint:
-    name: POSIX Syntax & ShellCheck
+  lint-and-test:
+    name: POSIX Syntax, ShellCheck & Behavioral Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -19,14 +19,17 @@ jobs:
 
       - name: Verify POSIX sh syntax
         run: |
-          for script in scripts/*; do
+          for script in scripts/* tests/*.sh; do
             [ -f "$script" ] || continue
             sh -n "$script"
           done
 
       - name: Run ShellCheck static analysis
         run: |
-          for script in scripts/*; do
+          for script in scripts/* tests/*.sh; do
             [ -f "$script" ] || continue
             shellcheck "$script"
           done
+
+      - name: Execute POSIX behavioral test suite
+        run: sh ./tests/run.sh
