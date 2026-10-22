@@ -1,0 +1,36 @@
+name: Bug Report
+description: Report a deterministic failure, POSIX incompatibility, or signal handling bug.
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: Target Operating System
+      options:
+        - Linux (Debian / Ubuntu / RHEL / Alpine)
+        - macOS
+        - FreeBSD / OpenBSD
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shell
+    attributes:
+      label: POSIX /bin/sh Implementation
+      options:
+        - dash
+        - busybox ash
+        - bash (POSIX mode)
+        - zsh / ksh
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal Reproduction Steps
+      description: Exact command invocation and terminal output.
+      render: sh
+    validations:
+      required: true
