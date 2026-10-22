@@ -19,7 +19,7 @@ A curated collection of lightweight, zero-dependency POSIX shell utilities and C
 Clone the repository and install or execute utilities directly:
 
 ```sh
-git clone [https://github.com/Abdelmalek2030/devtools-hub.git](https://github.com/Abdelmalek2030/devtools-hub.git)
+git clone git@github.com:Abdelmalek2030/devtools-hub.git
 cd devtools-hub
 
 # Inspect active PIDs on port 8080 without terminating (dry-run)
@@ -28,20 +28,23 @@ cd devtools-hub
 # Reclaim local port 8080
 ./scripts/clean-ports.sh 8080
 
+# View UNIX manual page
+man ./man/clean-ports.1
+
 # Optional: Install utilities globally to /usr/local/bin
 sudo make install
 ```
 
-## Quality Gates
+## Quality Gates & Testing
 
-Verify POSIX syntax compliance and run static analysis locally:
+Verify POSIX syntax compliance, run static analysis, and execute the behavioral test suite locally:
 
 ```sh
 make check
 make lint
+sh ./tests/run.sh
 ```
 
 ## License
 
 Released under the [MIT License](./LICENSE).
-
