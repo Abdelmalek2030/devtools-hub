@@ -4,30 +4,34 @@ MANDIR ?= $(PREFIX)/share/man/man1
 SCRIPTS_DIR := scripts
 MAN_DIR := man
 
-.PHONY: all help check lint test bench install uninstall
+.PHONY: all help check lint test bench sandbox install uninstall
 
 all: help
 
 help:
 	@printf "devtools-hub build & installation interface\n\n"
 	@printf "Targets:\n"
-	@printf "  make check      Verify POSIX sh syntax without executing scripts\n"
-	@printf "  make lint       Run ShellCheck static analysis across all scripts\n"
-	@printf "  make test       Execute zero-dependency POSIX behavioral test suite\n"
-	@printf "  make bench      Run execution performance benchmark suite\n"
-	@printf "  make install    Install utilities and man pages into $(PREFIX)\n"
+	@printf "  make check      Verify POSIX sh syntax across all scripts and tests\n"
+	@printf "  make lint       Run ShellCheck static analysis\n"
+	@printf "  make test       Execute zero-dependency behavioral test suite\n"
+	@printf "  make sandbox    Run tests in an isolated hermetic sandbox\n"
+	@printf "  make bench      Run performance latency benchmarks\n"
+	@printf "  make install    Install utilities and man pages to $(PREFIX)\n"
 	@printf "  make uninstall  Remove installed utilities and man pages\n"
 
 check:
-	@for f in $(SCRIPTS_DIR)/* tests/*.sh; do \
+	@for f in $(SCRIPTS_DIR)/* tests/*.sh install.sh; do \
 		if [ -f "$$f" ]; then sh -n "$$f"; fi; \
 	done
 
 lint: check
-	@shellcheck $(SCRIPTS_DIR)/* tests/*.sh
+	@shellcheck $(SCRIPTS_DIR)/* tests/*.sh install.sh
 
 test:
 	@sh ./tests/run.sh
+
+sandbox:
+	@sh ./tests/sandbox.sh
 
 bench:
 	@sh ./tests/benchmark.sh
