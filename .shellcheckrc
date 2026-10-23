@@ -1,4 +1,11 @@
-# ShellCheck static analysis configuration for POSIX compliance
+# ShellCheck runtime configuration file
+# Enforce strict POSIX dialect
 shell=sh
-severity=warning
-disable=SC2034,SC2154
+
+# Enable aggressive static analysis rules
+enable=quote-safe-variables
+enable=check-unassigned-uppercase
+enable=avoid-nullary-conditions
+
+# Exclude non-actionable subshell warnings for POSIX traps
+disable=SC2039
