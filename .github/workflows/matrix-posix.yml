@@ -1,0 +1,43 @@
+name: POSIX Compatibility Matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    name: Shell Matrix (${{ matrix.shell }}) on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        shell: [dash, bash, sh]
+        include:
+          - os: ubuntu-latest
+            shell: busybox
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Shell Interpreters (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq dash busybox mksh
+
+      - name: Execute Test Suite with Specified Shell
+        run: |
+          if [ "${{ matrix.shell }}" = "busybox" ]; then
+            busybox ash ./tests/run.sh
+          else
+            ${{ matrix.shell }} ./tests/run.sh
+          fi
+
+      - name: Execute Performance Benchmark
+        run: sh ./tests/benchmark.sh
