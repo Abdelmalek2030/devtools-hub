@@ -6,15 +6,17 @@ Makefile text eol=lf
 
 # Ensure GitHub Linguist classifies the repository as 100% Shell
 Makefile linguist-detectable=false
+.markdownlint.json linguist-detectable=false
 man/* linguist-documentation=true
 docs/* linguist-documentation=true
 
-# Exclude development, CI metadata, and standalone bootstrap scripts from release tarballs
+# Exclude development, CI metadata, and tests from release tarballs
 .github/ export-ignore
 tests/ export-ignore
+docs/ export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 .shellcheckrc export-ignore
+.markdownlint.json export-ignore
 install.sh export-ignore
-
