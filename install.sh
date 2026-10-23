@@ -5,16 +5,22 @@ set -eu
 
 REPO="Abdelmalek2030/devtools-hub"
 RAW_BASE="https://raw.githubusercontent.com/${REPO}/main"
-DEST_DIR="${PREFIX:-/usr/local}/bin"
+PREFIX="${PREFIX:-/usr/local}"
+DEST_DIR="${PREFIX}/bin"
 
 printf "Installing devtools-hub utilities into %s...\n" "$DEST_DIR"
 
-if [ ! -w "$DEST_DIR" ]; then
-    printf "Error: Target directory '%s' is not writable. Run with sudo or set PREFIX.\n" "$DEST_DIR" >&2
+if [ ! -d "$DEST_DIR" ] && ! mkdir -p "$DEST_DIR" 2>/dev/null; then
+    printf "Error: Cannot create directory '%s'. Re-run with sudo or define PREFIX.\n" "$DEST_DIR" >&2
     exit 1
 fi
 
-SCRIPTS="clean-ports.sh xdg-audit.sh sys-doctor.sh"
+if [ ! -w "$DEST_DIR" ]; then
+    printf "Error: Destination '%s' is not writable.\n" "$DEST_DIR" >&2
+    exit 1
+fi
+
+SCRIPTS="clean-ports.sh xdg-audit.sh sys-doctor.sh with-lock.sh"
 
 for script in $SCRIPTS; do
     name="$(basename "$script" .sh)"
@@ -31,4 +37,4 @@ for script in $SCRIPTS; do
     chmod 0755 "$target"
 done
 
-printf "\nInstallation complete. Utilities ready in %s.\n" "$DEST_DIR"
+printf "\nInstallation finished successfully. All utilities are active in %s.\n" "$DEST_DIR"
