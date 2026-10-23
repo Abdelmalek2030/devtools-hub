@@ -1,0 +1,30 @@
+name: Release Provenance
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  actions: read
+  id-token: write
+  contents: write
+
+jobs:
+  checksums:
+    name: Generate Artifact Checksums
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate SHA256 Checksums
+        run: |
+          mkdir -p dist
+          tar -czf dist/devtools-hub-${{ github.ref_name }}.tar.gz scripts/ man/ completions/ LICENSE README.md
+          cd dist && sha256sum * > SHA256SUMS
+
+      - name: Upload Artifacts to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
