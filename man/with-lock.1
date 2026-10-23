@@ -1,0 +1,30 @@
+.TH WITH-LOCK 1 "October 2026" "devtools-hub 1.0.0" "User Commands"
+.SH NAME
+with-lock \- execute a command under an exclusive POSIX atomic mutex lock
+.SH SYNOPSIS
+.B with-lock
+.I lock-name
+.I command
+.RI [ args... ]
+.SH DESCRIPTION
+.B with-lock
+acquires an exclusive filesystem lock inside
+.B $XDG_STATE_HOME
+(or
+.BR /tmp )
+using atomic
+.BR mkdir (1)
+semantics before executing
+.IR command .
+It prevents overlapping cron jobs or concurrent CI deployments across Linux, macOS, and BSD environments where
+.BR flock (1)
+may not be portable.
+.SH EXIT STATUS
+.TP
+.B 0
+Lock was acquired and the wrapped command exited successfully.
+.TP
+.B 1
+Invalid arguments, lock contention detected, or wrapped command failure.
+.SH AUTHOR
+Abdelmalek <Abdelmalek2030github@hotmail.com>
