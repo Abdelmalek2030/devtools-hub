@@ -3,7 +3,6 @@
 
 set -eu
 
-SCRIPT="./scripts/clean-ports.sh"
 PASS=0
 
 assert_fails() {
@@ -22,14 +21,29 @@ assert_succeeds() {
     PASS=$((PASS + 1))
 }
 
-# 1. Missing arguments must exit non-zero
-assert_fails sh "$SCRIPT"
+# --- 1. clean-ports.sh assertions ---
+assert_fails sh ./scripts/clean-ports.sh
+assert_fails sh ./scripts/clean-ports.sh "invalid_port"
+assert_fails sh ./scripts/clean-ports.sh "8080a"
+assert_succeeds sh ./scripts/clean-ports.sh 65534 --dry-run
 
-# 2. Non-numeric port arguments must be rejected
-assert_fails sh "$SCRIPT" "invalid_port"
-assert_fails sh "$SCRIPT" "8080a"
+# --- 2. xdg-audit.sh assertions ---
+assert_fails sh ./scripts/xdg-audit.sh --invalid-flag
+assert_succeeds sh ./scripts/xdg-audit.sh
 
-# 3. High ephemeral unused port in dry-run mode must succeed cleanly
-assert_succeeds sh "$SCRIPT" 65534 --dry-run
+# Isolated sandbox test for xdg-audit --strict failure on missing directories
+SANDBOX="$(mktemp -d 2>/dev/null || mktemp -d -t devtools)"
+trap 'rm -rf "$SANDBOX"' EXIT INT TERM HUP
+assert_fails env XDG_CONFIG_HOME="$SANDBOX/missing" sh ./scripts/xdg-audit.sh --strict
 
-printf "All %d behavioral assertions passed.\n" "$PASS"
+# --- 3. sys-doctor.sh assertions ---
+assert_succeeds sh ./scripts/sys-doctor.sh
+
+# --- 4. with-lock.sh assertions ---
+if [ -f ./scripts/with-lock.sh ]; then
+    assert_fails sh ./scripts/with-lock.sh
+    assert_fails sh ./scripts/with-lock.sh "../invalid_path" true
+    assert_succeeds env XDG_STATE_HOME="$SANDBOX" sh ./scripts/with-lock.sh "ci-test" true
+fi
+
+printf "All %d behavioral assertions passed successfully.\n" "$PASS"
