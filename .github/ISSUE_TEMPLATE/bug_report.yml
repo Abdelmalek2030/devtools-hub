@@ -1,36 +1,32 @@
 name: Bug Report
-description: Report a deterministic failure, POSIX incompatibility, or signal handling bug.
-title: "bug: "
-labels: ["bug", "triage"]
+description: File a reproducible bug or unexpected script behavior in devtools-hub
+title: "[Bug]: "
+labels: ["type/bug", "status/triage"]
 body:
-  - type: dropdown
-    id: os
+  - type: markdown
     attributes:
-      label: Target Operating System
-      options:
-        - Linux (Debian / Ubuntu / RHEL / Alpine)
-        - macOS
-        - FreeBSD / OpenBSD
-    validations:
-      required: true
-
-  - type: dropdown
-    id: shell
-    attributes:
-      label: POSIX /bin/sh Implementation
-      options:
-        - dash
-        - busybox ash
-        - bash (POSIX mode)
-        - zsh / ksh
-    validations:
-      required: true
-
+      value: |
+        Please ensure you have verified your POSIX shell environment and XDG base directory specifications before filing.
   - type: textarea
-    id: repro
+    id: symptoms
     attributes:
-      label: Minimal Reproduction Steps
-      description: Exact command invocation and terminal output.
-      render: sh
+      label: Bug Description
+      description: Clear and concise description of what went wrong.
+      placeholder: The POSIX utility script failed when executing under dash/sh...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: Exact commands or shell invocation flags to trigger the anomaly.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Operating System & Shell
+      description: Output of `uname -a` and your shell interpreter (e.g., dash, zsh, bash).
+      placeholder: Linux Ubuntu / dash
     validations:
       required: true
