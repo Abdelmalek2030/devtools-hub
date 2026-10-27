@@ -1,0 +1,5 @@
+# Security Vulnerability Disclosure Contact for devtools-hub
+Contact: mailto:Abdelmalek2030github@hotmail.com
+Preferred-Languages: en, vi
+Policy: https://github.com/Abdelmalek2030/devtools-hub/blob/main/SECURITY.md
+Canonical: https://github.com/Abdelmalek2030/devtools-hub/.well-known/security.txt
